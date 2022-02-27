@@ -4,7 +4,9 @@ from flask import Flask, request
 import os
 import openai
 
-load_dotenv()
+from pathlib import Path  # Python 3.6+ only
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
 openai.api_key = os.getenv("OPENAI_API_KEY")
 completion = openai.Completion()
 
@@ -15,7 +17,7 @@ session_prompt = "You are talking to Jabe, GPT3 bot influencer who was mentored 
 def ask(question, chat_log=None):
     prompt_text = f'{chat_log}{restart_sequence}: {question}{start_sequence}:'
     response = openai.Completion.create(
-      engine="davinci",
+      engine="text-davinci-001",
       prompt=prompt_text,
       temperature=0.8,
       max_tokens=150,
